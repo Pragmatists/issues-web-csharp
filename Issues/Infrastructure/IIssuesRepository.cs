@@ -7,5 +7,7 @@ namespace Issues.Infrastructure
     {
         IQueryable<Issue> All();
         Issue Add(Issue issue);
+        Issue Load(int id);
+        IQueryable<Issue> FindByStatus(Issue.IssueStatus status);
     }
 }

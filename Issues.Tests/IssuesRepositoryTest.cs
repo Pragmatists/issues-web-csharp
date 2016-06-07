@@ -1,6 +1,8 @@
-﻿using System.Data.Common;
+﻿using System;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.Linq;
 using FluentAssertions;
 using Issues.Domain;
 using Issues.Infrastructure;
@@ -12,25 +14,71 @@ namespace Issues.Tests
 {
     public class IssuesRepositoryTest
     {
-        [Test]
-        public void TestMethod1()
+        private IssuesTestContext db;
+        private IIssuesRepository repository;
+
+        [SetUp]
+        public void SetUp()
         {
-            var issuesTestContext = new IssuesTestContext();
-            var issuesRepository = new IssuesRepository(issuesTestContext);
+            db = new IssuesTestContext();
+            repository = new EFIssuesRepository(db);
+            db.Database.ExecuteSqlCommand("DELETE FROM Issues");
+        }
 
+        [Test]
+        public void LoadSavedIssue()
+        {
             var newIssue = NewIssue("EF sucks");
-            issuesRepository.Add(newIssue);
 
-            issuesTestContext.SaveChanges();
-
-            var loaded = issuesTestContext.Issues.Find(1);
-            
+            var newIssueId = repository.Add(newIssue).ID;
+        
+            var loaded = db.Issues.Find(newIssueId);
             loaded.ShouldBeEquivalentTo(newIssue);
+        }
+
+        [Test]
+        public void FindsByStatus()
+        {
+            IssueExists(AnIssueInStatus(Issue.IssueStatus.OPEN));
+            IssueExists(AnIssueInStatus(Issue.IssueStatus.CLOSED));
+
+            IQueryable<Issue> found = repository.FindByStatus(Issue.IssueStatus.CLOSED);
+
+            found.Should().HaveCount(1).And.Contain(x => x.Status == Issue.IssueStatus.CLOSED);
+        }
+
+        private void IssueExists(Issue anIssue)
+        {
+            repository.Add(anIssue);
+        }
+
+        private Issue AnIssueInStatus(Issue.IssueStatus issueStatus)
+        {
+            var issue = new Issue("default title");
+            if (issueStatus == Issue.IssueStatus.CLOSED)
+            {
+                issue.FixedIn(AProductVersion());
+                issue.Close();
+            }
+            return issue;
+        }
+
+        private ProductVersion AProductVersion()
+        {
+            return null;
+        }
+
+        [Test]
+        public void FailsMeaningfullyWhenIssueDoesNotExist()
+        {
+            Action act = () => repository.Load(404);
+
+            act.ShouldThrow<ArgumentException>().WithMessage("Issue does not exist");
         }
 
         private Issue NewIssue(string title)
         {
-            return new Issue(1, title);
+            return new Issue(title);
         }
 
         public class IssuesTestContext : IssuesContext
@@ -44,6 +92,7 @@ namespace Issues.Tests
             {
                 var sqliteConnectionInitializer = new SqliteDropCreateDatabaseAlways<IssuesTestContext>(modelBuilder);
                 Database.SetInitializer(sqliteConnectionInitializer);
+                base.OnModelCreating(modelBuilder);
             }
         }
     }

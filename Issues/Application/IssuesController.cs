@@ -19,13 +19,13 @@ namespace Issues.Application
             this.issuesRepository = issuesRepository;
         }
 
-        // GET: api/IssuesRepository
+        // GET: api/issues
         public IQueryable<Issue> GetIssues()
         {
             return issuesRepository.All();
         }
 
-        // GET: api/IssuesRepository/5
+        // GET: api/issues/5
         [ResponseType(typeof (Issue))]
         public IHttpActionResult GetIssue(int id)
         {
@@ -38,7 +38,7 @@ namespace Issues.Application
             return Ok(issue);
         }
 
-        // PUT: api/IssuesRepository/5
+        // PUT: api/issues/5
         [ResponseType(typeof (void))]
         public IHttpActionResult PutIssue(int id, Issue issue)
         {
@@ -70,7 +70,7 @@ namespace Issues.Application
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/IssuesRepository
+        // POST: api/issues
         [ResponseType(typeof (Issue))]
         public IHttpActionResult PostIssue(Issue issue)
         {
@@ -85,7 +85,7 @@ namespace Issues.Application
             return CreatedAtRoute("DefaultApi", new {id = issue.ID}, issue);
         }
 
-        // DELETE: api/IssuesRepository/5
+        // DELETE: api/issues/5
         [ResponseType(typeof (Issue))]
         public IHttpActionResult DeleteIssue(int id)
         {

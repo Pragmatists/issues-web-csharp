@@ -119,10 +119,10 @@
     <Compile Include="Application\IssuesController.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Domain\Issue.cs" />
+    <Compile Include="Domain\ProductVersion.cs" />
     <Compile Include="Infrastructure\IIssuesRepository.cs" />
-    <Compile Include="Infrastructure\IssuesRepository.cs" />
+    <Compile Include="Infrastructure\EFIssuesRepository.cs" />
     <Compile Include="Domain\Resolution.cs" />
-    <Compile Include="Domain\Status.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -145,7 +145,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201606071559347_AddTitle.resx">

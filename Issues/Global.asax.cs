@@ -32,7 +32,7 @@ namespace Issues
         {
             if (controllerType == typeof (IssuesController))
             {
-                return new IssuesController(new IssuesRepository(new IssuesContext()));
+                return new IssuesController(new EFIssuesRepository(new IssuesContext()));
             }
             return null;
         }

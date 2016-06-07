@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using Issues.Domain;
 
 namespace Issues.Infrastructure
 {
@@ -19,6 +20,12 @@ namespace Issues.Infrastructure
         {
         }
 
-    public System.Data.Entity.DbSet<Issues.Domain.Issue> Issues { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.ComplexType<Issue.IssueStatus>();
+            modelBuilder.Types<Issue>().Configure(c=>c.Property(x=>x.Status.Name).HasColumnName("IsStatus"));
+        }
+
+        public DbSet<Domain.Issue> Issues { get; set; }
   }
 }
