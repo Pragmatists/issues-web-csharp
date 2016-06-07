@@ -12,14 +12,20 @@ namespace Issues.Application
     public class IssuesController : ApiController
     {
         private readonly IssuesContext db = new IssuesContext();
+        private readonly IIssuesRepository issuesRepository;
 
-        // GET: api/Issues
-        public IQueryable<Issue> GetIssues()
+        public IssuesController(IIssuesRepository issuesRepository)
         {
-            return db.Issues;
+            this.issuesRepository = issuesRepository;
         }
 
-        // GET: api/Issues/5
+        // GET: api/IssuesRepository
+        public IQueryable<Issue> GetIssues()
+        {
+            return issuesRepository.All();
+        }
+
+        // GET: api/IssuesRepository/5
         [ResponseType(typeof (Issue))]
         public IHttpActionResult GetIssue(int id)
         {
@@ -32,7 +38,7 @@ namespace Issues.Application
             return Ok(issue);
         }
 
-        // PUT: api/Issues/5
+        // PUT: api/IssuesRepository/5
         [ResponseType(typeof (void))]
         public IHttpActionResult PutIssue(int id, Issue issue)
         {
@@ -64,7 +70,7 @@ namespace Issues.Application
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Issues
+        // POST: api/IssuesRepository
         [ResponseType(typeof (Issue))]
         public IHttpActionResult PostIssue(Issue issue)
         {
@@ -79,7 +85,7 @@ namespace Issues.Application
             return CreatedAtRoute("DefaultApi", new {id = issue.ID}, issue);
         }
 
-        // DELETE: api/Issues/5
+        // DELETE: api/IssuesRepository/5
         [ResponseType(typeof (Issue))]
         public IHttpActionResult DeleteIssue(int id)
         {
@@ -110,15 +116,3 @@ namespace Issues.Application
         }
     }
 }
-
-/*
- * {"Message":"An error has occurred.","ExceptionMessage":"The 'ObjectContent`1'
- *  type failed to serialize the response body for content type 'application/json; charset=utf-8'.","ExceptionType":
- *  "System.InvalidOperationException","StackTrace":null,"InnerException":{"Message":"An error has occurred.","ExceptionMessage":
- *  "Model compatibility cannot be checked because the database does not contain model metadata. Model compatibility can only be c
- *  hecked for databases created using Code First or Code First Migrations.","ExceptionType":"System.NotSupportedException","StackTrace":"  
- *   w System.Data.Entity.Internal.ModelCompatibilityChecker.CompatibleWithModel(InternalContext internalContext, ModelHashCalculator modelHashCalculator, 
- *   Boolean throwIfNoMetadata, DatabaseExistenceState existenceState)\r\n   w System.Data.Entity.Internal.InternalContext.CompatibleWithModel(Boolean throwIfNoMetadata
- *   , DatabaseExistenceState existenceState)\r\n   w System.Data.Entity.DropCreateDatabaseIfModelChanges`1.InitializeDatabase(TContext context)\r\n   w System.Data.Entity.Internal.InternalContext.<>c__DisplayClassf`1.<CreateInitializationAction>b__e()\r\n   w System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)\r\n   w System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()\r\n   w System.Data.Entity.Internal.LazyInternalContext.<InitializeDatabase>b__4(InternalContext c)\r\n   w System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)\r\n   w System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)\r\n   w System.Data.Entity.Internal.LazyInternalContext.InitializeDatabase()\r\n   w System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)\r\n   w System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()\r\n   w System.Data.Entity.Internal.Linq.InternalSet`1.GetEnumerator()\r\n   w System.Data.Entity.Infrastructure.DbQuery`1.System.Collections.IEnumerable.GetEnumerator()\r\n   w Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeList(JsonWriter writer, IEnumerable values, JsonArrayContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)\r\n   w Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeValue(JsonWriter writer, Object value, JsonContract valueContract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerProperty)\r\n   w Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.Serialize(JsonWriter jsonWriter, Object value, Type objectType)\r\n   w Newtonsoft.Json.JsonSerializer.SerializeInternal(JsonWriter jsonWriter, Object value, Type objectType)\r\n   w System.Net.Http.Formatting.BaseJsonMediaTypeFormatter.WriteToStream(Type type, Object value, Stream writeStream, Encoding effectiveEncoding)\r\n   w System.Net.Http.Formatting.JsonMediaTypeFormatter.WriteToStream(Type type, Object value, Stream writeStream, Encoding effectiveEncoding)\r\n   w System.Net.Http.Formatting.BaseJsonMediaTypeFormatter.WriteToStream(Type type, Object value, Stream writeStream, HttpContent content)\r\n   w System.Net.Http.Formatting.BaseJsonMediaTypeFormatter.WriteToStreamAsync(Type type, Object value, Stream writeStream, HttpContent content, TransportContext transportContext, CancellationToken cancellationToken)\r\n--- Koniec śladu stosu z poprzedniej lokalizacji, w której wystąpił wyjątek ---\r\n   w System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\r\n   w System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   w System.Web.Http.WebHost.HttpControllerHandler.<WriteBufferedResponseContentAsync>d__1b.MoveNext()"}}
-
- * */

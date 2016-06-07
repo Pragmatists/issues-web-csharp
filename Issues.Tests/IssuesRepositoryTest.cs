@@ -1,6 +1,7 @@
 ﻿using System.Data.Common;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using FluentAssertions;
 using Issues.Domain;
 using Issues.Infrastructure;
 using Issues.Migrations;
@@ -9,26 +10,36 @@ using SQLite.CodeFirst;
 
 namespace Issues.Tests
 {
-    public class IssuesRepoTest
+    public class IssuesRepositoryTest
     {
         [Test]
         public void TestMethod1()
         {
             var issuesTestContext = new IssuesTestContext();
-            issuesTestContext.Issues.Add(new Issue(1, "EF sucks"));
+            var issuesRepository = new IssuesRepository(issuesTestContext);
+
+            var newIssue = NewIssue("EF sucks");
+            issuesRepository.Add(newIssue);
+
             issuesTestContext.SaveChanges();
-            var issue = issuesTestContext.Issues.Find(1);
-            Assert.That(issue.Title, Is.EqualTo("EF sucks"));
+
+            var loaded = issuesTestContext.Issues.Find(1);
+            
+            loaded.ShouldBeEquivalentTo(newIssue);
         }
 
-        public class IssuesTestContext : DbContext
+        private Issue NewIssue(string title)
+        {
+            return new Issue(1, title);
+        }
+
+        public class IssuesTestContext : IssuesContext
         {
  
             public IssuesTestContext() : base("IssuesTestContext")
             {
             }
 
-            public DbSet<Issue> Issues { get; set; }
             protected override void OnModelCreating(DbModelBuilder modelBuilder)
             {
                 var sqliteConnectionInitializer = new SqliteDropCreateDatabaseAlways<IssuesTestContext>(modelBuilder);

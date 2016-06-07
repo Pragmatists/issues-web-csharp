@@ -8,7 +8,7 @@ namespace Issues.Migrations
         public override void Up()
         {
             CreateTable(
-                "Issues",
+                "IssuesRepository",
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
@@ -20,7 +20,7 @@ namespace Issues.Migrations
         
         public override void Down()
         {
-            DropTable("Issues");
+            DropTable("IssuesRepository");
         }
     }
 }

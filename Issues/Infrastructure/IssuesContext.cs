@@ -15,6 +15,10 @@ namespace Issues.Infrastructure
         {
         }
 
+        protected IssuesContext(string connectionString) : base(connectionString)
+        {
+        }
+
     public System.Data.Entity.DbSet<Issues.Domain.Issue> Issues { get; set; }
   }
 }
