@@ -42,8 +42,9 @@ namespace Issues.Tests
         public void GetsAnIssue_MyWebApi()
         {
             repository.Load(1).Returns(new Issue("an issue"));
-            MyWebApi.Controller<IssuesController>().WithResolvedDependencyFor(repository).
-                Calling(c => c.GetIssue(1))
+            MyWebApi.Controller<IssuesController>()
+                .WithResolvedDependencyFor(repository)
+                .Calling(c => c.GetIssue(1))
                 .ShouldReturn()
                 .Ok()
                 .WithResponseModelOfType<Issue>()
