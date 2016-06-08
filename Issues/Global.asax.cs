@@ -18,14 +18,14 @@ namespace Issues
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
             Database.SetInitializer(new IssuesDevInitializer());
-            var controllerFactory = new IssuesControllerFactory();
+            var controllerFactory = new IssuesControllerActivator();
             GlobalConfiguration.Configuration.Services.Replace(
                 typeof (IHttpControllerActivator),
                 controllerFactory);
         }
     }
 
-    public class IssuesControllerFactory : IHttpControllerActivator
+    public class IssuesControllerActivator : IHttpControllerActivator
     {
         public IHttpController Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor,
             Type controllerType)

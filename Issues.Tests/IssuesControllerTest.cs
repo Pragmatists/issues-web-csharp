@@ -18,7 +18,7 @@ namespace Issues.Tests
         {
             IIssuesRepository repository = Substitute.For<IIssuesRepository>();
             MyWebApi.Controller<IssuesController>().WithResolvedDependencyFor(repository).
-                Calling(c => c.GetIssues());
+                Calling(c => c.GetIssues()).ShouldReturn().StatusCode();
         }
     }
 }

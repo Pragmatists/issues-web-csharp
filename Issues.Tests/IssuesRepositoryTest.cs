@@ -47,9 +47,17 @@ namespace Issues.Tests
             found.Should().HaveCount(1).And.Contain(x => x.Status == Issue.IssueStatus.CLOSED);
         }
 
-        private void IssueExists(Issue anIssue)
+        [Test]
+        public void FailsMeaningfullyWhenIssueDoesNotExist()
         {
-            repository.Add(anIssue);
+            Action act = () => repository.Load(404);
+
+            act.ShouldThrow<ArgumentException>().WithMessage("Issue does not exist");
+        }
+
+        private ProductVersion AProductVersion()
+        {
+            return null;
         }
 
         private Issue AnIssueInStatus(Issue.IssueStatus issueStatus)
@@ -63,17 +71,9 @@ namespace Issues.Tests
             return issue;
         }
 
-        private ProductVersion AProductVersion()
+        private void IssueExists(Issue anIssue)
         {
-            return null;
-        }
-
-        [Test]
-        public void FailsMeaningfullyWhenIssueDoesNotExist()
-        {
-            Action act = () => repository.Load(404);
-
-            act.ShouldThrow<ArgumentException>().WithMessage("Issue does not exist");
+            repository.Add(anIssue);
         }
 
         private Issue NewIssue(string title)
