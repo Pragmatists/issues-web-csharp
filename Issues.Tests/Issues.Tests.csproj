@@ -122,6 +122,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\IssueTest.cs" />
     <Compile Include="IssuesControllerTest.cs" />
     <Compile Include="IssuesRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
