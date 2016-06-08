@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -29,13 +30,14 @@ namespace Issues.Application
         [ResponseType(typeof (Issue))]
         public IHttpActionResult GetIssue(int id)
         {
-            var issue = db.Issues.Find(id);
-            if (issue == null)
+            try
+            {
+                return Ok(issuesRepository.Load(id));
+            }
+            catch (ArgumentException)
             {
                 return NotFound();
             }
-
-            return Ok(issue);
         }
 
         // PUT: api/issues/5

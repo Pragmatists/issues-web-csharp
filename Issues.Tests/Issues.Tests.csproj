@@ -123,8 +123,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\IssueTest.cs" />
-    <Compile Include="IssuesControllerTest.cs" />
-    <Compile Include="IssuesRepositoryTest.cs" />
+    <Compile Include="Application\IssuesControllerTest.cs" />
+    <Compile Include="Infrastructure\IssuesRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
